@@ -11,7 +11,7 @@
     "release:major": "changelog -M && git commit -a -m 'docs: updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
     "release:minor": "changelog -m && git commit -a -m 'docs: updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
     "release:patch": "changelog -p && git commit -a -m 'docs: updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags",
-    "start": "cd node_modules/verdaccio && npm link ../../ && verdaccio --listen http://0.0.0.0:4873"
+    "start": "cd node_modules/verdaccio && npm link ../../ && verdaccio  --config ../../config.yaml  --listen http://0.0.0.0:4873"
   },
   "main": "index.js",
   "version": "0.0.5",

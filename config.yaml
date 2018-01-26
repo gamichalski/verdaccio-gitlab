@@ -1,0 +1,19 @@
+storage: /home/.local/share/verdaccio/storage
+
+auth:
+  gitlab:
+    url: https://git.fesc.io
+
+packages:
+  '@*/*':
+    # scoped packages
+    access: $all
+    publish: $authenticated
+    proxy: npmjs
+    gitlab: true
+
+  '**':
+    access: $all
+    publish: $authenticated
+    proxy: npmjs
+    gitlab: true
