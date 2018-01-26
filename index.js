@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: MIT
 
 var httperror = require('http-errors');
+var axios = require('axios');
 
 function Auth(config, stuff) {
+  
   var self = Object.create(Auth.prototype);
   self._users = {};
   self._config = config;
@@ -14,25 +16,35 @@ function Auth(config, stuff) {
 module.exports = Auth;
 
 Auth.prototype.authenticate = function(user, password, cb) {
-
-  var GitlabAPI = require('node-gitlab-api')({
-    url:   this._config.url,
-    token: password
-  });
-
-  GitlabAPI.users.current().then((response) => {
-    if (user !== response.username) return cb(httperror[403]('wrong gitlab username'));
-    var ownedGroups = [user];
-    GitlabAPI.groups.all({'owned': 'true'}).then((groups) => {
-      groups.forEach(function(item) {
-        if (item.path === item.full_path) { // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
-          ownedGroups.push(item.path);
-        }
-      });
-      cb(null, ownedGroups);
+  axios.post(`${this._config.url}/oauth/token`, {
+    "grant_type": "password",
+    "username": user,
+    "password": password
+  })
+  .then((response) => {
+    console.log(response.data)
+    var GitlabAPI = require('node-gitlab-api')({
+      url: this._config.url,
+      oauthToken: response.data.access_token
     });
-  }).
-  catch(error => {
+
+    GitlabAPI.users.current().then((response) => {
+      if (user !== response.username) return cb(httperror[403]('wrong gitlab username'));
+      var ownedGroups = [user];
+      GitlabAPI.groups.all({'owned': 'true'}).then((groups) => {
+        groups.forEach(function(item) {
+          if (item.path === item.full_path) { // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+            ownedGroups.push(item.path);
+          }
+        });
+        cb(null, ownedGroups);
+      });
+    }).
+    catch(error => {
+      if (error) return cb('Personal access token invalid');
+    });
+  })
+  .catch(function (error) {
     if (error) return cb('Personal access token invalid');
   });
 };

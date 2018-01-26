@@ -11,7 +11,7 @@
     "release:major": "changelog -M && git commit -a -m 'docs: updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
     "release:minor": "changelog -m && git commit -a -m 'docs: updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
     "release:patch": "changelog -p && git commit -a -m 'docs: updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags",
-    "start": "cd node_modules/verdaccio && npm link ../../ && verdaccio"
+    "start": "cd node_modules/verdaccio && npm link ../../ && verdaccio --listen http://0.0.0.0:4873"
   },
   "main": "index.js",
   "version": "0.0.5",
@@ -35,6 +35,7 @@
     "url": "https://github.com/bufferoverflow/verdaccio-gitlab/issues"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "node-gitlab-api": "^2.2.0",
     "verdaccio": "^2.7.3"
   },
