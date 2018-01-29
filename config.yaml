@@ -6,7 +6,7 @@ auth:
 
 packages:
    '**':
-    access: $all
+    access: $authenticated
     publish: $authenticated
     proxy: npmjs
     gitlab: true
