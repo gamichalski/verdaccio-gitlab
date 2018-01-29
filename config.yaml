@@ -5,14 +5,7 @@ auth:
     url: https://git.fesc.io
 
 packages:
-  '@*/*':
-    # scoped packages
-    access: $all
-    publish: $authenticated
-    proxy: npmjs
-    gitlab: true
-
-  '**':
+  '@Unimed/*':
     access: $all
     publish: $authenticated
     proxy: npmjs
