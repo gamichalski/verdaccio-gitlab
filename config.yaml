@@ -5,7 +5,7 @@ auth:
     url: https://git.fesc.io
 
 packages:
-  '@unimed/*':
+   '**':
     access: $all
     publish: $authenticated
     proxy: npmjs
